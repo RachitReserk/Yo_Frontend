@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';  
-import  Link  from 'next/link';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -10,32 +10,31 @@ const LoginPage = () => {
 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e:React.FormEvent) => {
-    setLoading(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     setError('');
     if (!formData.email || !formData.password) {
       setError('All fields are required!');
-      setLoading(false)
+      setLoading(false);
       return;
     }
 
     try {
-      const req = await axios.post('https://yo-backend.onrender.com/auth/login',formData,{withCredentials:true});
-      if(req.status === 200)
-        router.push('/dashboard')
-    }catch (error:any) {
-      console.log(error)
-        setError(error.response.data.message)
-    }finally{
-      setLoading(false)
-    }  
+      const req = await axios.post('https://yo-backend.onrender.com/auth/login', formData, { withCredentials: true });
+      if (req.status === 200) router.push('/dashboard');
+    } catch (error: any) {
+      console.log(error);
+      setError(error.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -73,9 +72,13 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+            className={`w-full font-semibold py-3 rounded-lg transition duration-300 ${
+              loading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
         <p className="text-center text-gray-600 mt-4">

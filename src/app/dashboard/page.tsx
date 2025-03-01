@@ -18,7 +18,6 @@ type User = {
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-
   useEffect(() => {
     const getData = async () => {
       try {
@@ -57,7 +56,7 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-100">
         <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
           <h1 className="cursor-pointer text-xl font-bold">Dashboard</h1>
-          <h2 className="text-sm md:text-2xl font-semibold">{user?.username}!</h2>
+          <h2 className="hidden md:block text-sm md:text-2xl font-semibold">{user?.username}!</h2>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/edit-profile" className="text-white hover:underline">
               Edit Profile
@@ -73,6 +72,7 @@ export default function Dashboard() {
 
         <main className="p-4">
           <p className="mt-2 text-gray-700">This is your private dashboard area.</p>
+          <h2 className="md:hidden block text-sm md:text-2xl font-semibold">{user?.username}!</h2>
         </main>
       </div>
     );

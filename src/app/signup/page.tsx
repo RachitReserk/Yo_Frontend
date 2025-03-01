@@ -66,7 +66,7 @@ const SignupPage = () => {
 
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 to-blue-500">
-      <div className="md:m-0 m-4 bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
+      <div className="animate-fade-in md:m-0 m-4 bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Sign Up</h2>
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}

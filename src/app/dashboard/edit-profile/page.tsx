@@ -25,6 +25,7 @@ const defaultUser: User = {
 
 export default function EditProfile() {
   const [user, setUser] = useState<User>(defaultUser);
+  const [loading, setLoading] = useState(false); 
 
   const router = useRouter();
 
@@ -44,8 +45,8 @@ export default function EditProfile() {
           description: data.description || ''
         });
 
-      } catch (error:any) {
-        console.log(error)
+      } catch (error: any) {
+        console.log(error);
         toast("Please log in again.");
         router.push('/login');
       }
@@ -68,23 +69,25 @@ export default function EditProfile() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);  
     try {
-      await axios.put("http://localhost:3002/user/profile", user, {
+      await axios.put("https://yo-backend.onrender.com/user/profile", user, {
         withCredentials: true,
       });
       toast.success("Profile updated successfully!");
-      //router.push('/dashboard');
-    } catch (error:any) {
-      console.log(error)
+    } catch (error: any) {
+      console.log(error);
       toast("Failed to update profile. Please try again.");
+    } finally {
+      setLoading(false);  
     }
   };
 
   const handleLogout = async () => {
     try {
-      const req = await axios.post("http://localhost:3002/auth/logout", {}, { withCredentials: true });
+      const req = await axios.post("https://yo-backend.onrender.com/auth/logout", {}, { withCredentials: true });
       if (req.status === 200) router.push('/');
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
       toast("Error Logging out");
     }
@@ -100,21 +103,68 @@ export default function EditProfile() {
         </div>
       </header>
 
-      <div className="p-6 md:max-w-2xl max-w-[330px] mx-auto">
+      <div className="animate-fade-in p-6 md:max-w-2xl max-w-[330px] mx-auto">
         <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" name="username" value={user.username} onChange={handleChange} placeholder="Username" required className="w-full p-2 border rounded" />
-          <input type="email" name="email" value={user.email} onChange={handleChange} placeholder="Email" required className="w-full p-2 border rounded" />
-          <input type="text" name="name" value={user.name} onChange={handleChange} placeholder="Full Name" required className="w-full p-2 border rounded" />
-          <input type="date" name="birthDate" value={user.birthDate} onChange={handleChange} className="w-full p-2 border rounded" />
-          <select name="gender" value={user.gender} onChange={handleChange} className="w-full p-2 border rounded">
+          <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={handleChange}
+            placeholder="Username"
+            required
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+            placeholder="Full Name"
+            required
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="date"
+            name="birthDate"
+            value={user.birthDate}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          <select
+            name="gender"
+            value={user.gender}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="female">Female</option>
             <option value="Other">Other</option>
           </select>
-          <textarea name="description" value={user.description} onChange={handleChange} placeholder="Tell us about yourself..." className="w-full p-2 border rounded" />
-          <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">Save Changes</button>
+          <textarea
+            name="description"
+            value={user.description}
+            onChange={handleChange}
+            placeholder="Tell us about yourself..."
+            className="w-full p-2 border rounded"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className={`py-2 px-4 rounded transition ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white'}`}
+          >
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
         </form>
       </div>
     </div>
