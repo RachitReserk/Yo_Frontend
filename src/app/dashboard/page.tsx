@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getCookie } from "cookies-next"; 
 
 type User = {
   username: string;
@@ -19,13 +18,6 @@ type User = {
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      router.push("/login");
-    }
-  }, []);
 
   useEffect(() => {
     const getData = async () => {
