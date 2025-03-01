@@ -44,7 +44,8 @@ export default function EditProfile() {
           description: data.description || ''
         });
 
-      } catch (error) {
+      } catch (error:any) {
+        console.log(error)
         toast("Please log in again.");
         router.push('/login');
       }
@@ -73,8 +74,9 @@ export default function EditProfile() {
       });
       toast.success("Profile updated successfully!");
       //router.push('/dashboard');
-    } catch (error) {
-      toast.error("Failed to update profile. Please try again.");
+    } catch (error:any) {
+      console.log(error)
+      toast("Failed to update profile. Please try again.");
     }
   };
 
@@ -82,7 +84,7 @@ export default function EditProfile() {
     try {
       const req = await axios.post("http://localhost:3002/auth/logout", {}, { withCredentials: true });
       if (req.status === 200) router.push('/');
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
       toast("Error Logging out");
     }
